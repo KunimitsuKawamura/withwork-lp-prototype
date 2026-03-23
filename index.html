@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>【提案プロトタイプ】withwork連携LP｜ミートキャリア</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <style>
+    :root {
+      --primary-orange: #F5A623;
+      --primary-orange-dark: #E8951A;
+      --primary-orange-light: #FFF3E0;
+      --primary-blue: #4A90D9;
+      --primary-blue-light: #E8F4FD;
+      --primary-blue-dark: #2C5F8A;
+      --text-dark: #2D2D2D;
+      --text-medium: #555;
+      --text-light: #888;
+      --bg-cream: #FDF8F0;
+      --bg-white: #FFFFFF;
+      --bg-gray: #F7F5F2;
+      --bg-warm: #FAF3EB;
+      --accent-green: #5CB85C;
+      --accent-green-light: #E8F5E9;
+      --border-light: #E8E2D8;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--text-dark);
+      background: var(--bg-cream);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.8;
+    }
+
+    /* ========== PROPOSAL MARKER ========== */
+    .proposal-marker {
+      position: relative;
+      margin-top: 32px;
+    }
+    .proposal-marker::before {
+      content: '✨ NEW — 提案箇所';
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 20px;
+      z-index: 10;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 10px rgba(255,107,107,0.3);
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 2px 10px rgba(255,107,107,0.3); }
+      50% { box-shadow: 0 2px 20px rgba(255,107,107,0.6); }
+    }
+    .proposal-highlight {
+      outline: 2.5px dashed #FF6B6B;
+      outline-offset: 8px;
+      border-radius: var(--radius-md);
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      background: var(--bg-white);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+    }
+    .logo span {
+      color: var(--primary-orange);
+    }
+    .header-cta {
+      background: var(--primary-orange);
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .header-cta:hover {
+      background: var(--primary-orange-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      background: linear-gradient(135deg, var(--bg-warm) 0%, var(--bg-cream) 50%, #FDE8CC 100%);
+      padding: 48px 24px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--primary-orange-light);
+      color: var(--primary-orange-dark);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .hero-heading {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+    .hero-heading em {
+      font-style: normal;
+      color: var(--primary-orange);
+      background: linear-gradient(transparent 60%, rgba(245,166,35,0.15) 60%);
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-medium);
+      line-height: 1.9;
+      margin-bottom: 24px;
+    }
+    .hero-image {
+      width: 100%;
+      height: 200px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #F5DEB3, #E8C88A);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ========== NEW: TRUST BADGES (PROPOSAL ①) ========== */
+    .trust-badges {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 28px;
+      padding: 0 4px;
+    }
+    .trust-badge {
+      flex: 1;
+      padding: 14px 12px;
+      border-radius: var(--radius-md);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.5;
+      transition: transform 0.3s ease;
+    }
+    .trust-badge:hover {
+      transform: translateY(-2px);
+    }
+    .trust-badge--blue {
+      background: var(--primary-blue-light);
+      color: var(--primary-blue-dark);
+      border: 1.5px solid rgba(74, 144, 217, 0.2);
+    }
+    .trust-badge--orange {
+      background: var(--primary-orange-light);
+      color: #B8700D;
+      border: 1.5px solid rgba(245, 166, 35, 0.2);
+    }
+    .trust-badge .badge-icon {
+      font-size: 22px;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .trust-badge .badge-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ========== NAV LINKS ========== */
+    .hero-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .hero-nav a {
+      font-size: 12px;
+      color: var(--text-medium);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+    .hero-nav a:hover {
+      border-color: var(--primary-orange);
+      color: var(--primary-orange);
+    }
+
+    /* ========== CTA BUTTON ========== */
+    .cta-button {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--primary-orange), #F7B84E);
+      color: white;
+      text-align: center;
+      padding: 16px 24px;
+      border-radius: var(--radius-xl);
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(245,166,35,0.35);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    .cta-button:hover::before {
+      left: 100%;
+    }
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(245,166,35,0.45);
+    }
+    .cta-button .cta-small {
+      font-size: 12px;
+      font-weight: 400;
+      display: block;
+      opacity: 0.9;
+    }
+
+    /* ========== SECTION COMMONS ========== */
+    .section {
+      padding: 56px 24px;
+    }
+    .section-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-orange);
+      text-align: center;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      color: var(--text-dark);
+    }
+    .section-title em {
+      font-style: normal;
+      color: var(--primary-orange);
+    }
+
+    /* ========== MESSAGE ========== */
+    .message {
+      background: var(--bg-white);
+    }
+    .message p {
+      font-size: 14px;
+      color: var(--text-medium);
+      text-align: center;
+      line-height: 2;
+      margin-bottom: 20px;
+    }
+    .message-emphasis {
+      font-size: 15px !important;
+      font-weight: 600;
+      color: var(--text-dark) !important;
+      position: relative;
+      display: inline-block;
+    }
+    .message-cards {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 28px 0;
+      flex-wrap: wrap;
+    }
+    .message-card {
+      background: var(--bg-cream);
+      border-radius: var(--radius-md);
+      padding: 16px 14px;
+      text-align: center;
+      flex: 1;
+      min-width: 90px;
+      font-size: 13px;
+      color: var(--text-medium);
+      line-height: 1.5;
+    }
+    .message-image {
+      width: 100%;
+      height: 180px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #E8D5C0, #D4BFA6);
+      margin: 28px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .message-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ========== ABOUT US ========== */
+    .about {
+      background: var(--bg-cream);
+    }
+    .about-desc {
+      font-size: 14px;
+      color: var(--text-medium);
+      text-align: center;
+      line-height: 2;
+      margin-bottom: 32px;
+    }
+    .about-desc strong {
+      color: var(--primary-orange-dark);
+      font-weight: 600;
+    }
+    .about-desc .highlight-text {
+      background: linear-gradient(transparent 60%, rgba(245,166,35,0.15) 60%);
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .pillar {
+      background: var(--bg-white);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .pillar-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary-orange-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .pillar-icon .material-icons-round {
+      color: var(--primary-orange);
+      font-size: 24px;
+    }
+    .pillar-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .pillar-desc {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    /* ========== BEFORE/AFTER ========== */
+    .before-after {
+      background: var(--bg-white);
+    }
+    .ba-label {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-medium);
+    }
+    .ba-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+    .ba-box {
+      width: 100%;
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .ba-box--before {
+      background: #F5F0EB;
+      border: 1px solid #E0D6CC;
+    }
+    .ba-box--after {
+      background: var(--accent-green-light);
+      border: 1px solid #C8E6C9;
+    }
+    .ba-box h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ba-box--before h4 { color: #999; }
+    .ba-box--after h4 { color: var(--accent-green); }
+    .ba-box ul {
+      list-style: none;
+      font-size: 13px;
+      line-height: 2;
+    }
+    .ba-box--before li::before { content: '😔 '; }
+    .ba-box--after li::before { content: '✨ '; }
+    .ba-arrow {
+      font-size: 28px;
+      color: var(--primary-orange);
+      text-align: center;
+    }
+
+    /* ========== PERSONA CARDS ========== */
+    .persona {
+      background: var(--bg-cream);
+    }
+    .persona-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .persona-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      font-size: 14px;
+      color: var(--text-dark);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--primary-orange);
+      transition: transform 0.3s ease;
+    }
+    .persona-card:hover {
+      transform: translateX(4px);
+    }
+    .persona-footer {
+      font-size: 13px;
+      color: var(--text-light);
+      text-align: center;
+      margin-top: 24px;
+      line-height: 1.9;
+    }
+
+    /* ========== NEW: CREDIBILITY SECTION (PROPOSAL ③) ========== */
+    .credibility {
+      background: linear-gradient(135deg, #2C3E5A 0%, #3D5478 50%, #2C3E5A 100%);
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .credibility::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(ellipse at center, rgba(245,166,35,0.08) 0%, transparent 60%);
+    }
+    .credibility-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .credibility-eyebrow {
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.8;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+    }
+    .credibility-heading {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .credibility-heading em {
+      font-style: normal;
+      color: var(--primary-orange);
+    }
+    .credibility-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      margin-bottom: 24px;
+    }
+    .credibility-label {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .credibility-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--primary-orange);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .credibility-number span {
+      font-size: 22px;
+      font-weight: 400;
+      color: white;
+      opacity: 0.8;
+    }
+    .credibility-sub {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+    .credibility-desc {
+      font-size: 14px;
+      line-height: 2;
+      opacity: 0.85;
+    }
+
+    /* ========== VALUES ========== */
+    .values {
+      background: var(--bg-white);
+    }
+    .values-text {
+      font-size: 14px;
+      color: var(--text-medium);
+      text-align: center;
+      line-height: 2;
+    }
+
+    /* ========== FAQ ========== */
+    .faq {
+      background: var(--bg-cream);
+    }
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-item {
+      background: var(--bg-white);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-question {
+      padding: 16px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: background 0.3s ease;
+    }
+    .faq-question:hover {
+      background: var(--bg-cream);
+    }
+    .faq-question .material-icons-round {
+      color: var(--primary-orange);
+      transition: transform 0.3s ease;
+    }
+    .faq-item.open .faq-question .material-icons-round {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+      padding: 0 20px 16px;
+    }
+    .faq-answer p {
+      font-size: 13px;
+      color: var(--text-medium);
+      line-height: 1.9;
+    }
+
+    /* ========== FOOTER CTA ========== */
+    .footer-cta {
+      background: linear-gradient(135deg, var(--bg-warm), #FDE8CC);
+      text-align: center;
+      padding: 56px 24px;
+    }
+    .footer-cta .section-title {
+      margin-bottom: 28px;
+    }
+    .footer-note {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 16px;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      background: var(--bg-white);
+      padding: 24px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .footer-links a {
+      font-size: 11px;
+      color: var(--text-light);
+      text-decoration: none;
+    }
+    .footer-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      color: var(--text-light);
+    }
+
+    /* ========== STICKY CTA ========== */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      padding: 12px 24px;
+      z-index: 100;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+    }
+    .sticky-cta .cta-button {
+      margin: 0 auto;
+      padding: 14px 24px;
+      font-size: 15px;
+    }
+
+    /* ========== FAQ NEW BADGE ========== */
+    .faq-new-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (min-width: 768px) {
+      .hero {
+        padding: 64px 48px;
+      }
+      .hero-heading {
+        font-size: 34px;
+      }
+      .section {
+        padding: 72px 48px;
+      }
+      .section-title {
+        font-size: 28px;
+      }
+      .trust-badges {
+        gap: 16px;
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 32px;
+      }
+      .trust-badge {
+        padding: 18px 16px;
+        font-size: 14px;
+      }
+      .pillars {
+        flex-direction: row;
+      }
+      .pillar {
+        flex: 1;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+      .credibility-number {
+        font-size: 72px;
+      }
+    }
+
+    /* ========== REASSURANCE NOTE ========== */
+    .reassurance {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #F0F7EE;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-top: 20px;
+      border: 1px solid #D5E8CF;
+    }
+    .reassurance-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .reassurance-text {
+      font-size: 12px;
+      color: #4A7A3E;
+      line-height: 1.7;
+    }
+    .reassurance-text strong {
+      font-weight: 600;
+    }
+    .commitment-note {
+      text-align: center;
+      margin-top: 16px;
+    }
+    .commitment-note p {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+    .commitment-note .note-highlight {
+      color: var(--text-medium);
+      font-weight: 500;
+    }
+    .credibility-reassurance {
+      background: rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-top: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .credibility-reassurance p {
+      font-size: 13px;
+      opacity: 0.85;
+      line-height: 1.9;
+    }
+    .credibility-reassurance .reassure-icon {
+      font-size: 16px;
+      margin-right: 4px;
+    }
+
+    /* Spacer for sticky CTA */
+    .bottom-spacer {
+      height: 80px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">meet<span>career</span></div>
+    <button class="header-cta">無料でキャリア相談</button>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-badge">withworkご利用者様 専用</div>
+    <h1 class="hero-heading">
+      <em>キャリアとライフ</em>、どちらも<br>
+      大切にしたいと思ったあなたへ。
+    </h1>
+    <p class="hero-sub">
+      その想いを大切にしながら、これからの選び方を整えて<br>
+      いく時間があります。ミートキャリアは、価値観や強みを<br>
+      言葉にするところから伴走します。
+    </p>
+
+    <div class="hero-image">
+      <img src="https://storage.googleapis.com/studio-design-asset-files/projects/65qmDLXROV/s-1439x840_v-fms_webp_10ea6c77-14fd-4f05-9d68-44e09d952bff_small.webp" alt="キャリア相談イメージ">
+    </div>
+
+    <!-- ★ PROPOSAL ① : TRUST BADGES -->
+    <div class="trust-badges proposal-marker proposal-highlight" id="proposal-1">
+      <div class="trust-badge trust-badge--blue">
+        <span class="badge-icon">🔄</span>
+        転職を前提としない<br>キャリアコーチング
+      </div>
+      <div class="trust-badge trust-badge--orange">
+        <span class="badge-icon">🏆</span>
+        有料コーチング実績
+        <span class="badge-number">6,000<small>件以上</small></span>
+      </div>
+    </div>
+
+    <a href="#" class="cta-button">
+      <span class="cta-small">＼ 無料で ／</span>
+      キャリア相談をしてみる
+    </a>
+
+    <!-- ★ NEW: 参加率向上の安心メッセージ -->
+    <div class="reassurance proposal-marker proposal-highlight" id="proposal-5">
+      <span class="reassurance-icon">💡</span>
+      <p class="reassurance-text">
+        <strong>たった1時間で、頭の中のモヤモヤが整理されます。</strong><br>
+        「何に迷っているか」が言葉になるだけで、<br>
+        次の一歩が見えてくる方がほとんどです。
+      </p>
+    </div>
+
+    <div class="hero-nav" style="margin-top: 20px;">
+      <a href="#about">ミートキャリアについて</a>
+      <a href="#faq">よくある質問</a>
+      <a href="#">無料でキャリア相談する</a>
+    </div>
+  </section>
+
+  <!-- MESSAGE SECTION -->
+  <section class="section message">
+    <p class="section-label">Message</p>
+    <h2 class="section-title">
+      大切にしたいものが増えるほど<br>
+      <em>キャリアは簡単ではなくなります</em>
+    </h2>
+    <p>
+      家庭のこと。仕事のこと。これまで積み重ねてきた経験のこと。<br>
+      どれも大切だからこそ、「どう選ぶか」に迷いが生まれるのは<br>
+      自然なことです。
+    </p>
+    <p class="message-emphasis">
+      キャリアには「整える時間」があります。
+    </p>
+    <div class="message-cards">
+      <div class="message-card">何を大切に<br>しているのか</div>
+      <div class="message-card">どんな時に<br>力を発揮<br>してきたのか</div>
+      <div class="message-card">これから何を<br>守りたいのか</div>
+    </div>
+    <p style="font-size:13px; text-align:center; color:var(--text-light);">
+      これらを整理することで、選択の納得感は大きく変わっていきます。
+    </p>
+  </section>
+
+  <!-- ABOUT US SECTION -->
+  <section class="section about" id="about">
+    <p class="section-label">About us</p>
+    <h2 class="section-title">ミートキャリアについて</h2>
+
+    <!-- ★ PROPOSAL ② : ABOUT文言の補強 -->
+    <p class="about-desc proposal-marker proposal-highlight" id="proposal-2" style="margin-top: 20px;">
+      ミートキャリアは、転職をゴールにしない<br>
+      <span class="highlight-text">有料の</span>キャリアコーチングサービスです。<br><br>
+      これまでに<strong>6,000件以上</strong>のコーチング実績。<br>
+      今すぐの決断や行動を求めるのではなく、<br>
+      これまでの経験や価値観を丁寧にひもときながら、<br>
+      「自分なりの軸」を整えていきます。
+    </p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">
+          <span class="material-icons-round">psychology</span>
+        </div>
+        <div>
+          <div class="pillar-title">自己理解</div>
+          <div class="pillar-desc">特性・価値観・強みを言語化</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">
+          <span class="material-icons-round">inventory</span>
+        </div>
+        <div>
+          <div class="pillar-title">キャリアの棚卸し</div>
+          <div class="pillar-desc">これまでの経験を意味づけ直す</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">
+          <span class="material-icons-round">route</span>
+        </div>
+        <div>
+          <div class="pillar-title">選び方の整理</div>
+          <div class="pillar-desc">これからの選択肢をフラットに考える</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section class="section before-after">
+    <h3 class="ba-label">【ミートキャリアを活用することで】</h3>
+    <div class="ba-container">
+      <div class="ba-box ba-box--before">
+        <h4>Before</h4>
+        <ul>
+          <li>何に迷っているのか分からない…</li>
+          <li>考えが堂々巡りになる…</li>
+          <li>転職すべきか現職に残るか判断できない…</li>
+        </ul>
+      </div>
+      <div class="ba-arrow">▼</div>
+      <div class="ba-box ba-box--after">
+        <h4>After</h4>
+        <ul>
+          <li>大切にしたい軸が見えてくる</li>
+          <li>今やること／やらないことが整理される</li>
+          <li>自分の選択に納得できるようになる</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONA CARDS -->
+  <section class="section persona">
+    <div class="persona-grid">
+      <div class="persona-card">キャリアもライフも<br>どちらも大切にしたい</div>
+      <div class="persona-card">今すぐ転職するかは決めていない</div>
+      <div class="persona-card">同じ環境で長く働いてきた</div>
+      <div class="persona-card">地方での働き方を考えている</div>
+      <div class="persona-card">「どうするべきか」より<br>「どうしたいか」を整理したい</div>
+    </div>
+    <p class="persona-footer">
+      まずは、自分の中にある考えや感情を安心して<br>
+      言葉にできる場であることを大切にしています。
+    </p>
+  </section>
+
+  <!-- ★ PROPOSAL ③ : CREDIBILITY SECTION (新規追加) -->
+  <section class="section credibility proposal-marker proposal-highlight" id="proposal-3">
+    <div class="credibility-inner">
+      <p class="credibility-eyebrow">— Why Paid Coaching —</p>
+      <h2 class="credibility-heading">
+        <em>有料</em>だからこそ、<br>
+        あなただけのキャリアに<br>向き合えます。
+      </h2>
+      <div class="credibility-card">
+        <p class="credibility-label">有料キャリアコーチング実績</p>
+        <p class="credibility-number">6,000<span>件以上</span></p>
+        <p class="credibility-sub">転職を前提としない中立的なコーチング</p>
+      </div>
+      <p class="credibility-desc">
+        転職サービスとは異なり、求人紹介ではなく<br>
+        「あなた自身の軸を整える」ことに集中。<br>
+        有料だからこそ、中立的な立場で<br>
+        一人ひとりのキャリアに伴走しています。
+      </p>
+      <!-- ★ NEW: 信頼性セクション内の参加動機づけコピー -->
+      <div class="credibility-reassurance proposal-marker proposal-highlight" id="proposal-6">
+        <p>
+          <span class="reassure-icon">📝</span>
+          無料相談を受けた方の多くが、<br>
+          「自分の考えが整理できた」<br>
+          「話せてよかった」と感じています。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="section values">
+    <h2 class="section-title">
+      「働く人の人生を大切にする」<br>
+      という考え方
+    </h2>
+    <p class="values-text">
+      キャリアを「条件」だけで判断しないこと。<br>
+      人生全体のバランスを大切にすること。<br>
+      そうした考え方のもと、それぞれの立場から<br>
+      ワーキングペアレンツのキャリアに向き合っています。
+    </p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section faq" id="faq">
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title">よくある質問</h2>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span>Q. 転職以外の選択肢もありますか？</span>
+          <span class="material-icons-round">expand_more</span>
+        </div>
+        <div class="faq-answer">
+          <p>A. 「今は転職しない」と判断することも、大切な整理です。軸が言葉になることで、この先の選択にも納得感が生まれます。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span>Q. 何を話せばいいか分かりません。</span>
+          <span class="material-icons-round">expand_more</span>
+        </div>
+        <div class="faq-answer">
+          <p>A. 大丈夫です。まとまっていない状態から始める方も多くいらっしゃいます。考えや気持ちを、そのまま言葉にするところからご一緒します。</p>
+        </div>
+      </div>
+
+      <!-- ★ PROPOSAL ④ : FAQ追加 (有料について) -->
+      <div class="faq-item proposal-marker proposal-highlight" id="proposal-4">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span>Q. サービスは無料ですか？ <span class="faq-new-badge">NEW</span></span>
+          <span class="material-icons-round">expand_more</span>
+        </div>
+        <div class="faq-answer">
+          <p>A. ミートキャリアは有料のキャリアコーチングサービスです。まずは無料相談で状況を整理し、ご自身に合うかどうかを確認いただけます。無料相談には費用はかかりません。</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span>Q. 無料相談で、サービスの勧誘はされますか？</span>
+          <span class="material-icons-round">expand_more</span>
+        </div>
+        <div class="faq-answer">
+          <p>A. 無理なご案内はしていません。無料相談は状況を整理する時間です。ご希望があれば、必要に応じてサービスをご紹介します。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span>Q. 地方在住でも利用できますか？</span>
+          <span class="material-icons-round">expand_more</span>
+        </div>
+        <div class="faq-answer">
+          <p>A. はい、問題ありません。オンラインでのご相談が中心です。地域の制約も含めて、現実的な考え方を一緒に整理します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <section class="footer-cta">
+    <h2 class="section-title">
+      キャリアとライフ、どちらも<br>
+      大切にしたいと思ったあなたへ。
+    </h2>
+    <a href="#" class="cta-button">
+      <span class="cta-small">＼ 無料で ／</span>
+      キャリア相談をしてみる
+    </a>
+    <p class="footer-note">無理な提案や勧誘は行っていません。</p>
+    <!-- ★ NEW: フッターCTAの参加動機づけ強化 -->
+    <div class="commitment-note proposal-marker proposal-highlight" id="proposal-7">
+      <p>
+        <span class="note-highlight">オンラインで約1時間。自分のための時間をつくってみませんか。</span><br>
+        1時間後には、モヤモヤが「自分の言葉」に変わっています。
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">お問い合わせ</a>
+      <a href="#">利用規約</a>
+      <a href="#">サービスガイド</a>
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">特定商取引法に基づく記載</a>
+    </div>
+    <div class="footer-logo">meetcareer</div>
+  </footer>
+
+  <div class="bottom-spacer"></div>
+
+  <!-- STICKY CTA -->
+  <div class="sticky-cta">
+    <a href="#" class="cta-button">
+      <span class="cta-small">＼ 無料で ／</span>
+      キャリア相談をしてみる
+    </a>
+  </div>
+
+</body>
+</html>
